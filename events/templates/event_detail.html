@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <title>{{ event.title }}</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .event-title {
+            margin-top: 20px;
+            font-size: 2rem;
+            text-align: center;
+            color: #343a40;
+        }
+        .event-description {
+            margin-top: 20px;
+        }
+        .event-image {
+            margin-top: 20px;
+            max-width: 80%;
+            height: auto;
+        }
+        .btn-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+
+
+        <h1 class="event-title">{{ event.title }}</h1>
+        <p class="event-description"><strong>Описание:</strong> {{ event.description }}</p>
+        <p><strong>Дата:</strong> {{ event.date }}</p>
+        <p><strong>Количество зарегистрированных участников:</strong> {{ event.attendee_count }}</p>
+
+        {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image" />
+        {% endif %}
+
+        <div class="btn-container">
+            <a href="{% url 'profile' %}" class="btn btn-primary">Назад к мероприятиям</a>
+        </div>
+    </div>
+</body>
+</html>

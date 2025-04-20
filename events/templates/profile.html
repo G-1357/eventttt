@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Профиль организатора</title>
+    <style>
+        .small-btn {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h2 class="text-center">Профиль организатора</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p>Имя: {{ data.name }}</p>
+                <p>Фамилия: {{ data.surname }}</p>
+<!--                <p>Логин: {{ data.login }}</p>-->
+                <p>Email: {% for email in data.emails %}{{ email }}{% endfor %}</p>
+                <p>Телефон: {% for phone in data.phones %}{{ phone }}{% endfor %}</p>
+            </div>
+        </div>
+
+        <h4>Список мероприятий:</h4>
+        <ul>
+            {% for event in events %}
+                <li>
+                    <a href="{% url 'event_detail' event.id %}">{{ event.title }}</a> - {{ event.date }}
+                        <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm small-btn">Редактировать</a>
+                        <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm small-btn">Удалить</a>
+
+                </li>
+            {% empty %}
+                <p>У вас пока нет мероприятий.</p>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'forma' %}" class="btn btn-primary btn-lg mt-3">Добавить мероприятие</a>
+        <form action="{% url 'logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger small-btn">Выход</button>
+        </form>
+    </div>
+</body>
+</html>

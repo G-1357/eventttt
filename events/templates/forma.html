@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Форма мероприятий в университете</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="{% static 'style.css' %}" rel="stylesheet"/>
+    <style>
+        h2.text-center {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 100px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div id="errorMessages" class="mt-3"></div>
+        <h2 class="text-center">Информация о мероприятии</h2>
+        <form method="post" action="{% url 'forma' %}" enctype="multipart/form-data" id="eventForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="eventTitle">Название мероприятия:</label>
+                <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Введите название мероприятия" required>
+            </div>
+            <div class="form-group">
+                <label for="eventDate">Дата мероприятия:</label>
+                <input type="date" class="form-control" id="eventDate" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="eventDescription">Описание мероприятия:</label>
+                <textarea class="form-control" id="eventDescription" name="description" rows="4" placeholder="Введите описание мероприятия" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="eventWhere">Где будет проходить мероприятие:</label>
+                <input type="text" class="form-control" id="eventWhere" name="where" placeholder="Введите место проведения мероприятия" required>
+            </div>
+            <div class="form-group">
+                <label for="eventPeople">Введите максимальное количество участников:</label>
+                <input type="number" class="form-control" id="eventPeople" name="people" placeholder="Введите количество участников" required>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="moderation" name="moderation">
+                <label class="form-check-label" for="moderation" title="Принимать и отклонять заявки от участников">Требуется ли вам модерирование заявок</label>
+            </div>
+
+            <p class="text-left"><strong>❗ </strong>Добавить фото можно после регистрации мероприятия в профиле организатора при редактировании мероприятия.<strong>❗</strong></p>
+            <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+            <a href="{% url 'profile' %}" class="btn btn-primary btn-lg mt-3">Вернуться в профиль организатора</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('eventForm').addEventListener('submit', function(event) {
+            const title = document.getElementById('eventTitle').value.trim();
+            const date = document.getElementById('eventDate').value;
+            const description = document.getElementById('eventDescription').value.trim();
+            const errorMessages = document.getElementById('errorMessages');
+
+            errorMessages.innerHTML = '';
+            let isValid = true;
+
+            if (title === '') {
+                isValid = false;
+                showError('Название мероприятия не может быть пустым.');
+            }
+
+            if (date === '') {
+                isValid = false;
+                showError('Дата мероприятия не может быть пустой.');
+            }
+
+            if (description === '') {
+                isValid = false;
+                showError('Описание мероприятия не может быть пустым.');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+
+            function showError(message) {
+                const div = document.createElement('div');
+                div.className = 'alert alert-danger';
+                div.textContent = message;
+                errorMessages.appendChild(div);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Регистрация</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="text-center">Регистрация организатора</h1>
+
+                {% if messages %}
+                    <div class="mb-3">
+                        <ul>
+                            {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <form action="{% url 'register' %}" method="post" id="registrationForm">
+                    {% csrf_token %}
+                    <input type="text" name="login" class="form-control" placeholder="Логин" required>
+                    <input type="text" name="name" class="form-control" placeholder="Имя" required>
+                    <input type="text" name="surname" class="form-control" placeholder="Фамилия" required>
+                    <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+                    <button type="submit" class="btn btn-primary btn-lg mt-3">Зарегистрироваться</button>
+                    <a href="{% url 'enter' %}" class="btn btn-primary">Назад</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        const name = document.getElementsByName('name')[0].value; // Измените на \\`getElementsByName\\`
+        const username = document.getElementsByName('login')[0].value;
+        const password = document.getElementsByName('password')[0].value;
+        const errorMessages = document.getElementById('errorMessages');
+        errorMessages.innerHTML = '';
+
+        if (name.trim() === '' || username.trim() === '' || password.trim() === '') {
+            event.preventDefault();
+            errorMessages.innerHTML = '<div class="alert alert-danger">Пожалуйста, заполните все поля.</div>';
+        }
+    });
+    </script>
+</body>
+</html>
